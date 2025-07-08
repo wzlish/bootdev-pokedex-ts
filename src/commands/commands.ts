@@ -11,7 +11,7 @@ export function getCommands(): Record<string, Commands> {
       callback: commandMap,
     },
     mapb: {
-      name: "map",
+      name: "mapb",
       description: "Browse the previous 20 map locations",
       callback: commandMapBack,
     },
