@@ -12,7 +12,7 @@ export function startREPL() {
   const chalk = new Chalk();
 
   state.interface.prompt();
-  state.interface.on("line", (input: string) => {
+  state.interface.on("line", async (input: string) => {
     const cleaned = cleanInput(input);
     if (!cleaned || cleaned.length === 0) {
       state.interface.prompt();
@@ -24,14 +24,14 @@ export function startREPL() {
 
     if (command in commands) {
       try {
-        commands[command].callback(state);
+        await commands[command].callback(state);
       } catch (e) {
         console.log(`Error: ${e}`);
       }
     } else {
       console.log(chalk.red(`Unrecognized command: "${command}"`));
       try {
-        commands["help"].callback(state);
+        await commands["help"].callback(state);
       } catch (e) {
         console.log(`Error fetching help: ${e}`);
       }
