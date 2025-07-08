@@ -1,8 +1,6 @@
 import { createInterface } from "node:readline";
-import { stdin, stdout } from "node:process";
 import { Chalk } from "chalk";
-
-import { getCommands } from "./commands/commands.js";
+import { initState } from "./state.js";
 
 export function cleanInput(input: string): string[] {
   const lowerTrim = input.toLowerCase().trim();
@@ -10,40 +8,35 @@ export function cleanInput(input: string): string[] {
 }
 
 export function startREPL() {
-  const rl = createInterface({
-    input: stdin,
-    output: stdout,
-    prompt: "Pokedex > ",
-  });
-
+  const state = initState();
   const chalk = new Chalk();
 
-  rl.prompt();
-  rl.on("line", (input: string) => {
+  state.interface.prompt();
+  state.interface.on("line", (input: string) => {
     const cleaned = cleanInput(input);
     if (!cleaned || cleaned.length === 0) {
-      rl.prompt();
+      state.interface.prompt();
       return;
     }
     const command = cleaned[0];
 
-    const commands = getCommands();
+    const commands = state.commands;
 
     if (command in commands) {
       try {
-        commands[command].callback(commands);
+        commands[command].callback(state);
       } catch (e) {
         console.log(`Error: ${e}`);
       }
     } else {
       console.log(chalk.red(`Unrecognized command: "${command}"`));
       try {
-        commands["help"].callback(commands);
+        commands["help"].callback(state);
       } catch (e) {
         console.log(`Error fetching help: ${e}`);
       }
     }
 
-    rl.prompt();
+    state.interface.prompt();
   });
 }

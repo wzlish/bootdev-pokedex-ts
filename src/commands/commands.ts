@@ -1,13 +1,8 @@
 import { commandHelp } from "./help.js";
 import { commandExit } from "./exit.js";
+import type { Commands } from "../state.js";
 
-export type commands = {
-  name: string;
-  description: string;
-  callback: (commands: Record<string, commands>) => void;
-};
-
-export function getCommands(): Record<string, commands> {
+export function getCommands(): Record<string, Commands> {
   return {
     help: {
       name: "help",

@@ -1,6 +1,7 @@
 import { getCommands } from "./commands.js";
+import type { State } from "../state.js";
 
-export function commandHelp() {
+export function commandHelp(_state: State) {
   const commands = getCommands();
   let output = ["Welcome to the Pokedex!", "Usage:", ""];
 
