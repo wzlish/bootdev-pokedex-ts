@@ -1,6 +1,7 @@
 import { commandHelp } from "./help.js";
 import { commandExit } from "./exit.js";
 import { commandMap, commandMapBack } from "./map.js";
+import { commandExplore } from "./explore.js";
 import type { Commands } from "../state.js";
 
 export function getCommands(): Record<string, Commands> {
@@ -14,6 +15,12 @@ export function getCommands(): Record<string, Commands> {
       name: "mapb",
       description: "Browse the previous 20 map locations",
       callback: commandMapBack,
+    },
+    explore: {
+      name: "explore",
+      description:
+        "Explore the given location looking for pokemon! Use map for location names.",
+      callback: commandExplore,
     },
     help: {
       name: "help",

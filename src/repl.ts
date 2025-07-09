@@ -18,13 +18,13 @@ export function startREPL() {
       state.interface.prompt();
       return;
     }
-    const command = cleaned[0];
+    const [command, ...args] = cleaned;
 
     const commands = state.commands;
 
     if (command in commands) {
       try {
-        await commands[command].callback(state);
+        await commands[command].callback(state, ...args);
       } catch (e) {
         console.log(`Error: ${e}`);
       }

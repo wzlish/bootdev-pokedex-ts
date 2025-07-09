@@ -1,5 +1,13 @@
 import { Cache } from "./pokecache.js";
 
+export class HttpError extends Error {
+  httpCode: number;
+  constructor(message: string, httpCode: number) {
+    super(message);
+    this.httpCode = httpCode;
+  }
+}
+
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
   #cache;
@@ -10,7 +18,7 @@ export class PokeAPI {
 
   async fetchLocations(pageURL?: string): Promise<Locations> {
     if (!pageURL || pageURL === "") {
-      pageURL = "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20";
+      pageURL = `${PokeAPI.baseURL}/location-area/?offset=0&limit=20`;
     }
     const resource = this.#cache.get(pageURL);
     if (resource) {
@@ -19,19 +27,27 @@ export class PokeAPI {
     try {
       const response = await fetch(pageURL);
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+        throw new HttpError(
+          `Response: ${response.statusText} (${response.status})`,
+          response.status,
+        );
       }
       const json = await response.json();
       this.#cache.add(pageURL, json as Locations);
       return json as Locations;
     } catch (e) {
-      throw new Error(
-        `Error with fetchLocations ('${pageURL}'): ${(e as Error).message}`,
-      );
+      if (e instanceof HttpError) {
+        throw e;
+      } else {
+        throw new Error(
+          `Error with fetchLocations ('${pageURL}'): ${(e as Error).message}`,
+        );
+      }
     }
   }
 
   async fetchLocation(locationName: string): Promise<Location> {
+    locationName = `${PokeAPI.baseURL}/location-area/${locationName}`;
     const resource = this.#cache.get(locationName);
     if (resource) {
       return resource as Location;
@@ -39,15 +55,22 @@ export class PokeAPI {
     try {
       const response = await fetch(locationName);
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+        throw new HttpError(
+          `Response: ${response.statusText} (${response.status})`,
+          response.status,
+        );
       }
       const json = await response.json();
       this.#cache.add(locationName, json as Locations);
       return json as Location;
     } catch (e) {
-      throw new Error(
-        `Error with fetchLocation ('${locationName}'): ${(e as Error).message}`,
-      );
+      if (e instanceof HttpError) {
+        throw e;
+      } else {
+        throw new Error(
+          `Error with fetchLocation ('${locationName}'): ${(e as Error).message}`,
+        );
+      }
     }
   }
 }

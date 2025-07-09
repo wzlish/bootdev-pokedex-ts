@@ -13,7 +13,7 @@ export type State = {
 export type Commands = {
   name: string;
   description: string;
-  callback: (state: State) => Promise<void>;
+  callback: (state: State, ...args: string[]) => Promise<void>;
 };
 
 export type locationState = {
@@ -26,7 +26,7 @@ export function initState(): State {
     interface: createInterface({
       input: stdin,
       output: stdout,
-      prompt: "Pokedex > ",
+      prompt: "ℙ𝕠𝕜𝕖𝔻𝕖𝕏 > ",
     }),
     PokeAPI: new PokeAPI(),
     location: { nextLocation: "", prevLocation: "" },
