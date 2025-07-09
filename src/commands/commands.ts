@@ -18,8 +18,7 @@ export function getCommands(): Record<string, Commands> {
     },
     explore: {
       name: "explore",
-      description:
-        "Explore the given location looking for pokemon! Use map for location names.",
+      description: "Explore the given location looking for pokemon!",
       callback: commandExplore,
     },
     help: {

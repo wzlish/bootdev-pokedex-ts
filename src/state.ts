@@ -2,6 +2,7 @@ import { createInterface, type Interface } from "readline";
 import { stdin, stdout } from "node:process";
 import { getCommands } from "./commands/commands.js";
 import { PokeAPI } from "./pokeapi.js";
+import chalk from "chalk";
 
 export type State = {
   interface: Interface;
@@ -26,7 +27,7 @@ export function initState(): State {
     interface: createInterface({
       input: stdin,
       output: stdout,
-      prompt: "ℙ𝕠𝕜𝕖𝔻𝕖𝕏 > ",
+      prompt: `${chalk.yellow("PokeDeX")} ${chalk.blue(">")} `,
     }),
     PokeAPI: new PokeAPI(),
     location: { nextLocation: "", prevLocation: "" },
