@@ -2,6 +2,7 @@ import { commandHelp } from "./help.js";
 import { commandExit } from "./exit.js";
 import { commandMap, commandMapBack } from "./map.js";
 import { commandExplore } from "./explore.js";
+import { commandCatch } from "./catch.js";
 import type { Commands } from "../state.js";
 
 export function getCommands(): Record<string, Commands> {
@@ -17,9 +18,14 @@ export function getCommands(): Record<string, Commands> {
       callback: commandMapBack,
     },
     explore: {
-      name: "explore",
+      name: "explore <location>",
       description: "Explore the given location looking for pokemon!",
       callback: commandExplore,
+    },
+    catch: {
+      name: "catch <pokemon>",
+      description: "Attempt to catch the target pokemon",
+      callback: commandCatch,
     },
     help: {
       name: "help",

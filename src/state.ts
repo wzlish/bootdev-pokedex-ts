@@ -1,7 +1,7 @@
 import { createInterface, type Interface } from "readline";
 import { stdin, stdout } from "node:process";
 import { getCommands } from "./commands/commands.js";
-import { PokeAPI } from "./pokeapi.js";
+import { PokeAPI, PokemonDetails } from "./pokeapi.js";
 import chalk from "chalk";
 
 export type State = {
@@ -9,6 +9,7 @@ export type State = {
   PokeAPI: PokeAPI;
   location: locationState;
   commands: Record<string, Commands>;
+  pokedex: Record<string, PokemonDetails>;
 };
 
 export type Commands = {
@@ -32,5 +33,6 @@ export function initState(): State {
     PokeAPI: new PokeAPI(),
     location: { nextLocation: "", prevLocation: "" },
     commands: getCommands(),
+    pokedex: {},
   };
 }
