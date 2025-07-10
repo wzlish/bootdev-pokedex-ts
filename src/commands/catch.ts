@@ -37,7 +37,7 @@ export async function commandCatch(state: State, ...args: string[]) {
     `${(100 / chance).toFixed(2)}% chance to catch ${pokemonDetails.species.name}`,
   );
   if (Math.floor(Math.random() * chance) == 0) {
-    if (state.pokedex[pokemonDetails.species.name]) {
+    if (state.pokedex[desiredPokemon]) {
       console.log(
         chalk.yellow(
           `${pokemonDetails.species.name} was caught, but as you already have one, you release it.`,
@@ -46,7 +46,7 @@ export async function commandCatch(state: State, ...args: string[]) {
       return;
     }
     console.log(chalk.cyan(`${pokemonDetails.species.name} was caught!`));
-    state.pokedex[pokemonDetails.species.name] = pokemonDetails;
+    state.pokedex[desiredPokemon] = pokemonDetails;
     console.log(
       chalk.yellow(
         `You've added ${pokemonDetails.species.name} to your PokeDeX`,
